@@ -26,7 +26,7 @@ public class ButtonClicker extends JFrame {
 			setTitle("SERVER");
 			JOptionPane.showMessageDialog(null, "Server started at: " + server.getIPAddress() + "\nPort: " + server.getPort());
 			button.addActionListener((e)->{
-				server.sendClick();
+			server.sendClick();
 			});
 			add(button);
 			setVisible(true);

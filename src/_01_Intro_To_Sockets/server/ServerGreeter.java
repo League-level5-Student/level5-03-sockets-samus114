@@ -44,22 +44,25 @@ public class ServerGreeter extends Thread {
 				System.out.println(dis.readUTF());
 				// 13. Create a DataOutputStream object. When initializing it, use the Server
 				// object you created in step 9 to call the getOutputStream() method.
-DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
+				DataOutputStream dos = new DataOutputStream(sock.getOutputStream());
 				// 14. Use the DataOutputStream object to send a message to the client using the
 				// writeUTF(String message) method.
-dos.writeUTF("HELLO CLIENT FRIEND PERSON!!!");
+				dos.writeUTF("HELLO CLIENT FRIEND PERSON!!!");
 				// 15. Close the client server
-			sock.close();
-			// 6. If the program catches a SockeTimeoutException, let the user know about it
-			// and set loop's boolean variable to false.
+				sock.close();
+				// 6. If the program catches a SockeTimeoutException, let the user know about it
+				// and set loop's boolean variable to false.
 			} catch (Exception e) {
-				if(e.get) {
-					
+				if (e.getStackTrace().equals("sockeTimeoutException")) {
+					System.out.println("Uh oh! There was a socket timeout exception :(");
+					bool = false;
 				}
-				System.out.println("Uh oh! There was a socket timeout exception :(");
-				bool = false;
-			// 7. If the program catches a IOException, let the user know about it and set
-			// the loop's boolean variable to false.
+				// 7. If the program catches a IOException, let the user know about it and set
+				// the loop's boolean variable to false.
+				if (e.getStackTrace().equals("IOException")) {
+					System.out.println("Uh oh! There was a IOException :o");
+					bool = false;
+				}
 			}
 		}
 	}
@@ -67,6 +70,12 @@ dos.writeUTF("HELLO CLIENT FRIEND PERSON!!!");
 	public static void main(String[] args) {
 		// 16. In a new thread, create an object of the ServerGreeter class and start
 		// the thread. Don't forget the try-catch.
-
+		try {
+			Thread thrd = new Thread(new ServerGreeter());
+			thrd.start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
