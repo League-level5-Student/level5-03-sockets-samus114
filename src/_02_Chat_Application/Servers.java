@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 
 public class Servers {
 	private int port;
-	String string;
+	String string = "<html>";
 	private ServerSocket server;
 	private Socket connection;
 
@@ -26,6 +26,7 @@ public class Servers {
 	}
 
 	public void start() {
+		ChatApp.label.setText(string);
 		try {
 			server = new ServerSocket(port, 100);
 			connection = server.accept();
@@ -34,8 +35,7 @@ public class Servers {
 			os.flush();
 			while (connection.isConnected()) {
 				try {
-					ChatApp.label.setText((String) is.readObject());
-					System.out.println(is.readObject());
+					ChatApp.label.setText(ChatApp.label.getText() + "<br/>" + (String) is.readObject());
 				} catch (EOFException e) {
 					JOptionPane.showMessageDialog(null, "connection lost");
 					System.exit(0);
@@ -59,12 +59,13 @@ public class Servers {
 	}
 
 	public void sendMessage() {
-		string = ChatApp.textbox.toString();
+		string = ChatApp.textbox.getText();
 		try {
 			if (os != null) {
 				os.writeObject(string);
 				os.flush();
 			}
+			ChatApp.textbox.setText("");
 		} catch (IOException e) {
 
 		}

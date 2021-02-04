@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 public class Client {
 	private String ip;
 	private int port;
-	String string;
+	String string = "<html>";
 	Socket connection;
 
 	ObjectOutputStream os;
@@ -23,6 +23,7 @@ public class Client {
 	}
 
 	public void start() {
+		ChatApp.label.setText(string);
 		try {
 			connection = new Socket(ip, port);
 			os = new ObjectOutputStream(connection.getOutputStream());
@@ -33,23 +34,24 @@ public class Client {
 		}
 		while (connection.isConnected()) {
 			try {
-				ChatApp.label.setText((String) is.readObject());
-				System.out.println(is.readObject());
+				ChatApp.label.setText(ChatApp.label.getText() + "<br/>" + (String) is.readObject());
 			} catch (ClassNotFoundException | IOException e) {
 				JOptionPane.showMessageDialog(null, "connection lost");
 				System.exit(0);
 			}
 		}
 	}
-public void sendMessage() {
-	string = ChatApp.textbox.toString();
-	try {
-		if(os != null) {
-			os.writeObject(string);
-			os.flush();
+
+	public void sendMessage() {
+		string = ChatApp.textbox.getText();
+		try {
+			if (os != null) {
+				os.writeObject(string);
+				os.flush();
+			}
+			ChatApp.textbox.setText("");
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-	} catch (IOException e) {
-		e.printStackTrace();
 	}
-}
 }

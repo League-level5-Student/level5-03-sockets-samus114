@@ -17,7 +17,7 @@ public class ChatApp {
 	JPanel panel = new JPanel();
 	JFrame frame = new JFrame();
 	static JLabel label = new JLabel();
-	static JTextField textbox = new JTextField();
+	static JTextField textbox = new JTextField(50);
 	JButton button = new JButton("Send message?");
 	Servers server;
 	Client client;
@@ -38,11 +38,16 @@ public class ChatApp {
 			frame.setVisible(true);
 			frame.setSize(500, 500);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			server.start();
+			panel.add(button);
 			button.addActionListener((e) -> {
 				server.sendMessage();
 			});
+			server.start();
 		} else {
+			frame.add(panel);
+			panel.add(label);
+			panel.add(textbox);
+			panel.add(button);
 			frame.setTitle("Chat extra");
 			String ipStr = JOptionPane.showInputDialog("Enter the IP Address");
 			String prtStr = JOptionPane.showInputDialog("Enter the port number");
@@ -51,10 +56,10 @@ public class ChatApp {
 			frame.setVisible(true);
 			frame.setSize(400, 300);
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			client.start();
 			button.addActionListener((e) -> {
 				client.sendMessage();
 			});
+			client.start();
 		}
 	}
 }
